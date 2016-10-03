@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Filled Donut Dashboard</title>
+    <meta charset="utf-8">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+    <link href="Dashboard.css" rel="stylesheet" />
+    <script src="Filled.js"></script>
+    <script src="Donut.js"></script>
+<style>	
+ 
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- PAGE HEADER -->
+        <div class="jumbotron">
+            <h1>Jumbo <small>Bootstrap Dashboard</small></h1>
+        </div>
+
+        <!-- PANEL: Results -->
+        <div class="panel panel-success" id="pnlResults">
+            <div class="panel-heading">
+                Country Data
+            </div>
+            <div class="row">
+
+                <!-- d3 Chart Divs -->
+                <div id="divBarChart" ></div>
+                <div id="divPieChart" ></div>
+
+            </div> <!--End of Row-->
+
+        </div> <!--End of Panel-->
+
+    </div> <!--End of Page Container-->
+
+
+            <script>
+
+    BarChartModule.drawBarChart();
+    PieChartModule.drawPieChart();
+
+            </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿body {
+            font: 16px sans-serif;
+        }
+
+        svg {
+            background-color: white;
+            border: solid;
+            border-width: 2px;
+        }
+
+        .arc path {
+            stroke: #000;
+        }
+
+        /*#divPie{
+            float: left;
+        }*/

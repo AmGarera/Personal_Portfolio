@@ -1,0 +1,413 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Act 4.3 Stacked Bar Charts</title>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <style>
+        body {
+            background-color: #ddd;
+            font-family: Arial, sans-serif;
+        }
+
+        svg {
+            background-color: #ffffff;
+        }
+
+        /*Style for x axis path (inside of xAxis g element) */
+        .xAxis path { /*x axis Line*/
+            fill: none;
+            /*stroke: darkgrey;
+        stroke-width: 1;*/
+        }
+
+        .xAxis line { /*x axis ticks */
+            stroke: black;
+            stroke-width: 1;
+        }
+
+        .xAxis text {
+            /*font-weight: bold;
+        font-size: larger;
+        font-size: x-large;*/
+        }
+
+        .yAxis path { /*x axis Line*/
+            fill: none;
+            /*stroke: black;
+        stroke-width: 2;*/
+        }
+
+        .yAxis line { /*x axis ticks */
+            /*stroke: black;
+        stroke-width: 2;*/
+        }
+
+        /* Styles for data line, area and data points on data line */
+        .dataLine {
+            stroke: steelblue;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .dot {
+            fill: darkblue;
+        }
+
+        .filledArea {
+            fill: lightsteelblue;
+            stroke-width: 0;
+            opacity: .5;
+        }
+
+        /*Styles for Grid Lines*/
+        .horizontalGridLines .tick {
+            stroke: lightgrey;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <h2>Act 4.3 Stacked Bar Charts</h2>
+    <div id="divBarChart"></div>
+
+    <script>
+
+        //Declare svg global variables
+        var svg_Width,                         //Width of SVG element
+            svg_Height;                         //Height of SVG element
+
+        //Declare global chart boundary settings object
+        var margin = {
+            top: 60,
+            bottom: 40,
+            left: 100,
+            right: 20
+        };
+
+        //Declare global data array
+        var data = [];
+
+        //Declare variables to desired min and max for y scale
+        var chosenMinimum_Y_Value,
+            chosenMaximum_Y_Value;
+
+        //Declare scaling functions
+        var x,
+            y,
+            colorScalingFunction;
+
+        //Load data and draw chart
+        d3.csv("data_Bostock_Small.csv", function (error, retrievedData) {
+            console.log("Inside csv function!");
+            console.log("retrievedData");
+            console.table(retrievedData);
+
+            var subCategoryNames = [];
+            var categoryNames = [];
+
+            //Fill subCatoryNames array
+            subCategoryNames = getSubCategoryNames(retrievedData);
+
+            //Build color scaling function
+            buildColorScalingFunction(subCategoryNames);
+
+            //Modify the retrieved data array into the form d3 wants
+            // to draw a Stacked Bar Chart
+            data = buildDataArrayForStackedBarChart(retrievedData, subCategoryNames);
+
+            //Fill categoryNames array from sorted (if done) data array
+            categoryNames = getCategoryNames(data);
+
+            //Create the SVG and group inside it
+            buildSVG();
+
+            //Create X and Y Scaling functions
+            build_X_ScalingFunction(categoryNames);
+            build_Y_ScalingFunction();
+
+            //Draw the X and Y axes
+            display_X_Axis();
+            display_Y_Axis();
+
+            //Display chart bars
+            displayStackedBars();
+
+        }); //end of csv callback function
+
+        //===============================================
+        // END OF STARTING CODE. BEGINNING OF FUNCTIONS
+        //================================================
+
+        function getSubCategoryNames(retrievedData) {
+            console.log("%cgetSubCategoryNames function called!", "color:DarkGreen; font-weight: bold");
+
+            var namesOfSubCategories = [];
+
+            //Create subCategoryNames array containing: "Electronics", "Software", "Mechanics"
+            namesOfSubCategories = d3.keys(retrievedData[0]).filter(function (key) {
+
+                //@!!! MUST CHANGE TO MATCH YOUR DATA!!!!
+                return key !== "State";
+
+            });
+            console.log("%cnamesOfSubCategories:", "color: darkblue; font-weight: bold", namesOfSubCategories);
+
+            return namesOfSubCategories;
+        }
+
+        function buildColorScalingFunction(subCategoryNames) {
+            console.log("%cbuildColorScaling function called!", "color:DarkGreen; font-weight: bold");
+
+            //Make a custom color scaling function
+            colorScalingFunction = d3.scale.ordinal()
+                                            .range(["#123123", "#123abc", "#d0743c"]);
+
+            //colorScalingFunction = d3.scale.category10()
+            //                                .domain(subCategoryNames);
+
+            console.log("colorScalingFunction.domain(): ", colorScalingFunction.domain());
+            console.log("colorScalingFunction.range(): ", colorScalingFunction.range());
+
+        }
+
+        // --------------------------------------------------------
+        // name:  buildDataArrayForStackedBarChart
+        // note:  YOU SHOULDN'T CHANGE ANY CODE IN THIS FUNCTION!!
+        function buildDataArrayForStackedBarChart(retrievedData, subCategoryNames) {
+            console.log("%cbuildDataArrayForStackedBarChart function called!", "color:DarkGreen; font-weight: bold");
+            console.log("data array:");
+            console.table(retrievedData);
+
+            var dataToDrawStackedBars = [];
+
+            //Add new array of objects to each row of retrievedData array
+            // with start and end  values for each bar segment
+            retrievedData.forEach(function (d) {
+                console.log("%c=================================================", "color:Purple; font-weight: bold; font-size: large")
+
+                var y0 = 0,
+                   subCategory_Value,
+                   subCategory_Start = 0,
+                   subCategory_End,
+                   newStackedBarDataArrayItem = [];
+
+                //Add a new property to the data array that will itself be an array:
+                //the stackedBarData array in the format d3 wants
+                d.stackedBarData = subCategoryNames.map(function (subCategory_Name) {
+                    // d.stackedBarData = colorScalingFunction.domain().map(function (subCategory_Name) {
+
+                    //Get the value for this bar segment
+                    subCategory_Value = +d[subCategory_Name];
+                    subCategory_End = subCategory_Start + subCategory_Value;
+                    console.log("%csubCategory Name: " + subCategory_Name, "color:Purple; font-weight: bold; font-size: larger");
+                    console.log("subCategory_Start = " + subCategory_Start + "    " +
+                                 "subCategory_End = " + subCategory_End);
+
+                    newStackedBarDataArrayItem = {
+                        name: subCategory_Name,
+                        y0: subCategory_Start,
+                        y1: subCategory_End
+                    };
+                    console.log(newStackedBarDataArrayItem);
+                    console.log(" ");
+
+                    //Move starting y position to old ending y position
+                    subCategory_Start = subCategory_Start + subCategory_Value;
+
+                    return newStackedBarDataArrayItem;
+
+                }); //end of loop through a row of the retrievedData array
+
+                console.table(d.stackedBarData);
+
+                //The total sum of all the y values for this row
+                d.rowTotal = d.stackedBarData[d.stackedBarData.length - 1].y1;
+                console.log("d.rowTotal = " + d.rowTotal);
+
+            });
+
+            //Sort by total, so bar chart goes from largest to smallest
+            retrievedData.sort(function (a, b) { return b.rowTotal - a.rowTotal; });
+
+            console.log("Modified Data Array:")
+            console.table(retrievedData);
+
+            return retrievedData;
+        }
+
+        function getCategoryNames(parData) {
+            console.log("%cgetCategoryNames function called!", "color:DarkGreen; font-weight: bold");
+
+            var namesOfCategories = [];
+
+            namesOfCategories = parData.map(function (d) {
+
+                //@!!! MUST CHANGE TO MATCH YOUR DATA!!!!
+                return d.State;
+
+            });
+            console.log("namesOfCategories = " + namesOfCategories);
+
+            return namesOfCategories;
+        }
+
+        function buildSVG() {
+            console.log("%cbuildSVG function called!", "color:DarkGreen; font-weight: bold");
+
+            svg_Width = 600;                         //Width of SVG element
+            svg_Height = 400;                        //Height of SVG element
+
+            //Add svg element
+            svg = d3.select('#divBarChart')
+                        .append('svg')
+                        .attr('width', svg_Width)
+                        .attr('height', svg_Height);
+
+            console.log("svg_Width = " + svg_Width);
+            console.log("svg_Height = " + svg_Height);
+            console.log("  ");
+
+        }
+
+        function build_X_ScalingFunction(categoryNames) {
+            console.log("%cbuild_X_ScalingFunction function called!", "color:DarkGreen; font-weight: bold");
+
+            //Build the x scaling function:
+            x = d3.scale.ordinal()
+                  .domain(categoryNames)
+                  .rangeRoundBands([margin.left, svg_Width - margin.right], .1);
+
+            console.log("%cx.domain() = " + x.domain(), 'color:red; font-weight: bold');
+            console.log("svg_Width = ", svg_Width);
+            console.log("margin.left = " + margin.left);
+            console.log("margin.right = " + margin.right);
+            console.log("%cx.range() = " + x.range(), 'color:red; font-weight: bold');
+            console.log("  ");
+        }
+
+        function build_Y_ScalingFunction() {
+            console.log("%cbuild_Y_ScalingFunction function called!", "color:DarkGreen; font-weight: bold");
+
+            var minAndMax_Y_Values = [],
+                  minYValueInData,
+                  maxYValueInData;
+
+            //Get min and max values of Y in the data array
+            minAndMax_Y_Data = d3.extent(data, function (d) {
+                return d.rowTotal;
+            });
+            minYValueInData = minAndMax_Y_Data[0];
+            maxYValueInData = minAndMax_Y_Data[1];
+
+            //Set actual min and max for y values we will use (may be different from the data!)
+            chosenMinimum_Y_Value = 0;
+            chosenMaximum_Y_Value = 10000000;
+            //chosenMaximum_Y_Value = maxYValueInData;
+
+            y = d3.scale.linear()
+                    .domain([chosenMinimum_Y_Value, chosenMaximum_Y_Value])
+                    .range([svg_Height - margin.bottom, margin.top]);
+
+            console.log("minAndMax_Y_Data: " + minAndMax_Y_Data);
+            console.log("minYValueInData = " + minYValueInData);
+            console.log("maxYValueInData = " + maxYValueInData);
+            console.log("chosenMinimum_Y_Value = " + chosenMinimum_Y_Value);
+            console.log("chosenMaximum_Y_Value = " + chosenMaximum_Y_Value);
+            console.log("%cy.domain() = " + y.domain(), 'color:red; font-weight: bold');
+            console.log("svg_Height = ", svg_Height);
+            console.log("margin.top = " + margin.top);
+            console.log("margin.bottom = " + margin.bottom);
+
+            console.log("%cy.range() = " + y.range() + "  REVERSED!!!!!", 'color:red; font-weight: bold');
+            console.log("  ");
+        }
+
+        function display_X_Axis() {
+            console.log("%cdisplayXAxis function called!", "color:DarkGreen; font-weight: bold");
+
+            //Build X axis with .axis()
+            var xAxis = d3.svg.axis()
+                        .scale(x)
+                        .orient("bottom");  //"top"
+
+            //Display X axis
+            var y_PositionOf_X_Axis = y(chosenMinimum_Y_Value);
+
+            svg.append("g")
+                .attr("class", "xAxis")
+                .attr("transform", "translate(0, " + y_PositionOf_X_Axis + ")")
+                .call(xAxis);
+
+            console.log("svg_Height = ", svg_Height);
+            console.log("y(chosenMinimum_Y_Value) = " + y(chosenMinimum_Y_Value));
+            console.log("y_PositionOf_X_Axis = " + y_PositionOf_X_Axis);
+            console.log("  ");
+
+        }
+
+        function display_Y_Axis() {
+            console.log("%cdisplay_Y_Axis function called!", "color:DarkGreen; font-weight: bold");
+
+            var yAxis = d3.svg.axis()
+              .scale(y)
+              .orient("left")
+              .ticks(5);
+
+            var x_PositionOf_Y_Axis = margin.left;
+
+            //Display Y axis
+            svg.append("g")
+                 .attr("class", "yAxis")
+                 .attr("transform", "translate(" + x_PositionOf_Y_Axis + ",0)")
+                 .call(yAxis);
+
+            console.log("svg_Width = ", svg_Width);
+            console.log("x_PositionOf_Y_Axis = " + x_PositionOf_Y_Axis);
+            console.log(" ");
+        }
+
+        function displayStackedBars() {
+            console.log("%cdisplayStackedBars function called!", "color: green; font-weight: bold");
+            console.log("svg_Width = " + svg_Width);
+            console.log("svg_Height = " + svg_Height);
+            console.log("margin.top = " + margin.top);
+            console.log("margin.bottom = " + margin.bottom);
+
+            //Create empty g's for bars at the correct x positions
+            var categoryGroups = svg.selectAll(".CategoryGroup")
+              .data(data)
+              .enter().append("g")
+              .attr("class", "CategoryGroup")
+              .attr("transform", function (d) {
+
+                  //@!!! MUST CHANGE TO MATCH YOUR DATA!!!!
+                  return "translate(" + x(d.State) + ",0)";
+              });
+
+            //Add the Stacked Bars to the g's
+            categoryGroups.selectAll("rect")
+                .data(function (d) {
+                    return d.stackedBarData;
+                })
+                .enter().append("rect")
+                .attr("width", x.rangeBand())
+                .attr("y", function (d) {
+
+                    console.log("y setting: d.y0 = " + d.y0 + " d.y1 = " + d.y1 + "   y(d.y0) = " + y(d.y0) + "  y(d.y1) = " + y(d.y1));
+                    return y(d.y1);
+                })
+                .attr("height", function (d) {
+                    return (y(d.y0) - y(d.y1));
+                })
+                .style("fill", function (d) {
+                    return colorScalingFunction(d.name);
+                });
+
+
+        }
+
+    </script>
+</body>
+</html>

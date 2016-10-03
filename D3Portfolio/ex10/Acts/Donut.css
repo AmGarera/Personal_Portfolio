@@ -1,0 +1,34 @@
+﻿body {
+        font: 16px sans-serif;
+        background-color: #dddddd;
+    }
+
+    svg {
+        background-color: white;
+        border: solid;
+        border-width: 2px;
+    }
+
+    .arc path {
+        stroke: #000;
+    }
+
+        /*.pie_OuterLabel {
+        fill: #393B79;
+        font-size: 20px;
+        text-anchor: middle;
+    }
+
+    .pie_InnerLabel {
+        fill: white;
+    }*/
+
+    .pie_InnerLabel {
+        fill: white;
+        text-anchor: middle;
+    }
+
+    .pie_OuterLabel {
+        fill: #393B79;
+        font-size: 20px;
+    }

@@ -1,0 +1,96 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ex 13</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<link href="../css/bootstrap.css" rel="stylesheet" />
+    <link href="CSS/Pie.css" rel="stylesheet" />
+    <link href="CSS/Stacked.css" rel="stylesheet" />
+
+    <script src="Java/Pie.js"></script>
+    <script src="Java/Stacked.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../Final_Garera.html">Final Portfolio Bootstrap and D3</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                      <li><a href="../Final_Garera.html">Home</a></li>
+                      <li><a href="../ex6/ex6pt2.html">Filled Area Chart</a></li>
+                      <li>
+                        <a href="../ex8/ex8.html">Multi-series Line Chart (Ex 7) with Legend</a>
+                      </li>
+                      <li>
+                        <a href="../ex8/ex8pt2.html">Vertical Bar Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex8/ex8pt3.html">Horizontal Bar Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex9/ex9.2.html">Stack Bar Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex10/ex10.html">Donut Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex10/ex10pt2.html">Pie Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex11/ex11.html">User-Filterable Multi-Line Chart</a>
+                      </li>
+                      <li>
+                        <a href="../ex12/home.html">Resizing versions of Ex 5 and Ex 8, Part 2</a>
+                      </li>
+                      <li class="active">
+                        <a href="../Ex13/Ex13.html">Bootstrap Dashboard</a>
+                      </li>
+                  </ul>
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </nav>
+
+        <div class="jumbotron">
+            <h1>Final Portfolio Bootstrap and D3 <small> Portfolio</small></h1>
+        </div>
+
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Bar Chart of Country Data</div>
+            <div id="divStacked"></div>
+            <div class="panel-footer"> Bootstrap Theme:  Yeti</div>
+        </div>
+
+        <div class="panel panel-default col-md-6">
+            <div class="panel-heading">Donut Chart of Country Data</div>
+            <div id="divPie"> </div>
+            <div class="panel-footer"> *Based on our text data.</div>
+        </div>
+
+    </div> <!--End of Page Container-->
+
+    <script>
+
+        StackedChartModule.drawStackedChart();
+        PieChartModule.drawPieChart();
+
+    </script>
+</body>
+
+</html>

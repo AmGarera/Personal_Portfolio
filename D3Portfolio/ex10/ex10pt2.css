@@ -1,0 +1,22 @@
+body {
+    font: 10px sans-serif;
+    background-color: tan;
+}
+
+svg {
+    background-color: cornflowerblue;
+    border: solid;
+    border-width: 3px;
+}
+
+/*Gives white lines between pie segments*/
+.arc path {
+    stroke: #fff;
+    stroke-width: 3;
+}
+.pieText {
+    fill: black;
+    font-size: xx-small;
+    font-weight: bold;
+    text-anchor:middle;
+}

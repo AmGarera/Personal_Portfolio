@@ -1,0 +1,45 @@
+body {
+    background-color: #ddd;
+    font-family: Arial, sans-serif;
+}
+
+svg {
+    background-color: #ffffff;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+path {
+    stroke: darkblue;
+    stroke-width: 4;
+    fill: none;
+}
+
+line {
+    stroke: black;
+}
+
+.xTicks {
+    stroke: black;
+    stroke-width: 2;
+}
+
+.xGrids {
+    stroke: lightgray;
+}
+
+.yGrids {
+    stroke: lightgray;
+}
+
+text {
+    font-family: Verdana;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.dot {
+    fill: darkblue;
+}
