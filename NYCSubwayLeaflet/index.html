@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="leaflet-providers.js"></script>
+    <style>
+
+        #map {
+            height: 480px;
+        }
+
+        body {
+            margin: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">NYC Subway Stops</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <a class="mdl-navigation__link" href="">Home</a>
+                <a class="mdl-navigation__link" href="">How I did It</a>
+                <a class="mdl-navigation__link" href="https://www.github.com/AmGarera">Github</a>
+                <a class="mdl-navigation__link" href="mailto:gareraanthony@gmail.com?subject=NYCSubwayLeaflet">Contact</a>
+            </nav>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Title</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">Home</a>
+            <a class="mdl-navigation__link" href="">How'd I do This</a>
+            <a class="mdl-navigation__link" href="https://www.github.com/AmGarera">Github</a>
+            <a class="mdl-navigation__link" href="mailto:gareraanthony@gmail.com?subject=NYCSubwayLeaflet">Contact</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content"><div id="map">
+        </div></div><footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+            <div class="mdl-logo">NYC Subway Stops</div>
+            <ul class="mdl-mini-footer__link-list">
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Privacy & Terms</a></li>
+            </ul>
+        </div>
+    </footer>
+    </main>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+
+</html>
