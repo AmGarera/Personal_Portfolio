@@ -1,6 +1,15 @@
 on: [push]
+env:
+  NODE_VERSION: 20
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
   publish:
     runs-on: ubuntu-latest
     permissions:
