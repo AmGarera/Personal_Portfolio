@@ -10,6 +10,7 @@ import { RouterOutlet } from '@angular/router';
       <a href="/" class="px-2 py-1 transition-colors duration-200">Home</a>
       <a href="/about" class="px-2 py-1 transition-colors duration-200">About</a>
       <a href="/contact" class="px-2 py-1 transition-colors duration-200">Contact</a>
+      <a href="/blog" class="px-2 py-1 transition-colors duration-200">Blog</a>
     </nav>
     <router-outlet></router-outlet>
   `,
