@@ -6,24 +6,15 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   template: `
-    <nav>
-      <a href="/">Home</a>
+    <nav class="flex justify-end p-4 text-white">
+      <a href="/" class="px-2 py-1 transition-colors duration-200">Home</a>
+      <a href="/about" class="px-2 py-1 transition-colors duration-200">About</a>
+      <a href="/contact" class="px-2 py-1 transition-colors duration-200">Contact</a>
     </nav>
     <router-outlet></router-outlet>
   `,
   styles: [
     `
-      :host {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      nav {
-        text-align: left;
-        padding: 0 0 2rem 0;
-      }
     `,
   ],
 })

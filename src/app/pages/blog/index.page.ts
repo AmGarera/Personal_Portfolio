@@ -8,9 +8,9 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <h1>Blog Archive</h1>
+    <h1 style="text-align: center;">Blog Archive</h1>
     @for (post of posts;track post.attributes.slug) {
-    <a [routerLink]="['/blog/', post.attributes.slug]">
+    <a [routerLink]="['/blog/', post.attributes.slug]" style="text-align: center;">
       <h2 class="post__title">{{ post.attributes.title }}</h2>
       <p class="post__desc">{{ post.attributes.description }}</p>
     </a>
@@ -19,7 +19,6 @@ import { RouterLink } from '@angular/router';
   styles: [
     `
       a {
-        text-align: left;
         display: block;
         margin-bottom: 2rem;
       }
@@ -27,6 +26,7 @@ import { RouterLink } from '@angular/router';
       .post__title,
       .post__desc {
         margin: 0;
+        text-align: center;
       }
     `,
   ],
