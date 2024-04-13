@@ -35,6 +35,6 @@ jobs:
           # By default this will be the branch which triggered this workflow
           branch: features/redesign-analogjs
           # Optional: Change the working directory
-          # workingDirectory: my-site
+          workingDirectory: anthony-personal
           # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
           wranglerVersion: '3'
