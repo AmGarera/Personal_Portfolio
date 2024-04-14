@@ -1,15 +1,15 @@
 on: [push]
-env:
-  NODE_VERSION: 20
+# env:
+#   NODE_VERSION: 20
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+  # setup:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Use Node.js ${{ env.NODE_VERSION }}
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
   publish:
     runs-on: ubuntu-latest
     permissions:
@@ -17,12 +17,17 @@ jobs:
       deployments: write
     env:
       PROJECT_PATH: .
+      NODE_VERSION: 20
     name: Publish to Cloudflare Pages
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       # Run a build step here if your project requires
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
@@ -36,6 +41,6 @@ jobs:
           # By default this will be the branch which triggered this workflow
           branch: features/redesign-analogjs-2
           # Optional: Change the working directory
-          workingDirectory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}
+          working-directory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}
           # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
           wranglerVersion: '3'
