@@ -38,7 +38,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: f17cf9d72bb03d63eab1341e3f65883b
           projectName: personal-site
-          directory: dist
+          directory: dist/analog/public
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Switch what branch you are publishing to.
